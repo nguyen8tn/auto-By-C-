@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,8 +42,8 @@ namespace WpfApp1
             string arg1 = @"cd\";
             string arg3 = @"cd Program Files\Nox\bin";
             string arg4 = @"nox_adb.exe connect 127.0.0.1:62001";
-            string arg5 = @"adb shell screencap /sdcard/screen.png";
-            string arg6 = @"adb pull /sdcard/screen.png D:\gundam";
+            string arg5 = @"adb shell /system/bin/screencap -p sdcard/asd.jpg";
+            string arg6 = @"adb pull /sdcard/asd.jpg D:\gundam\screen.png";
 
             ProcessStartInfo startInfo = new ProcessStartInfo();
             startInfo.FileName = "cmd.exe";
@@ -76,6 +76,16 @@ namespace WpfApp1
             if (!result.Contains("cannot connect to"))
             {
                 cmd.StandardInput.WriteLine(arg5);
+                cmd.StandardInput.Flush();
+                cmd.StandardInput.Close();
+                cmd.WaitForExit();
+                //new process - error at WriteLine(arg5);
+                cmd = new Process();
+                cmd.StartInfo = startInfo;
+                cmd.Start();
+                cmd.StandardInput.WriteLine(arg1);
+                cmd.StandardInput.WriteLine(arg3);
+                cmd.StandardInput.WriteLine(arg4);
                 cmd.StandardInput.WriteLine(arg6);
                 cmd.StandardInput.Flush();
                 cmd.StandardInput.Close();
